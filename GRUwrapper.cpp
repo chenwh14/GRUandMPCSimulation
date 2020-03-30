@@ -42,8 +42,8 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetInputPortWidth(S,0,1);//x
     ssSetInputPortWidth(S,1,1);//y
     
-    ssSetOutputPortWidth(S,0,6);//x predictive out
-    ssSetOutputPortWidth(S,1,6);//y predictive out
+    ssSetOutputPortWidth(S,0,10);//x predictive out
+    ssSetOutputPortWidth(S,1,10);//y predictive out
     
     ssSetInputPortDirectFeedThrough(S, 0, 1);
     ssSetInputPortDirectFeedThrough(S, 1, 1);
@@ -101,8 +101,8 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     InputRealPtrsType uPtrCurY  = ssGetInputPortRealSignalPtrs(S,1);
 
     float* input = new float[2]{(float)*uPtrCurX[0],(float)*uPtrCurY[0]};
-    float* outputX = new float[6]{};
-    float* outputY = new float[6]{};
+    float* outputX = new float[10]{};
+    float* outputY = new float[10]{};
     
     xyPredictor->Input(input);
     xyPredictor->Predict(outputX,outputY);
@@ -110,7 +110,7 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     real_T *xout = ssGetOutputPortRealSignal(S,0);
     real_T *yout = ssGetOutputPortRealSignal(S,1);
     
-    for (int i=0;i<6;i++)
+    for (int i=0;i<10;i++)
     {
         xout[i]=outputX[i];
         yout[i]=outputY[i];

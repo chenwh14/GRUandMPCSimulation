@@ -20,7 +20,7 @@ MPController::MPController(const double* _A, const double* _B, const double* _C,
 	Kmpc = (double*)mkl_calloc(m * p , sizeof(double), 64);
 
 	GenerateSu(Su, A, B, C, n, p, m);
-	GenerateWeightMatrix(Wy, p, _wy);
+	GenerateExponentialWeightMatrix(Wy, p, _wy, _wy);
 	GenerateWeightMatrix(Wu, m, _wu);
 	GenerateKmpc(Kmpc, Su, Wy, Wu, p, m);
 	GenerateSx(Sx, A, C, n, p);

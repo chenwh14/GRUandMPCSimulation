@@ -1,7 +1,6 @@
+function [pathX,pathY]=ConnectClips(pathName)
 %%
 %读取文件
-clear all;
-pathName=uigetdir('请选择文件夹');
 fileName=[pathName,'\newXYdataAll.txt'];
 [findFly,stageX, stageY, headX, headY, commandX, commandY] = textread(fullfile(fileName), '%d,%f,%f,%f,%f,%f,%f');
 %%

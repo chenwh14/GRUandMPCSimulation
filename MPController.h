@@ -3,7 +3,7 @@
 
 class MPController
 {
-public:
+private:
 	double* A;//system matrix
 	double* B;//control matrix
 	double* C;//output matrix

@@ -2,6 +2,7 @@
 #include "mkl.h"
 #include <string.h>
 #include <stdio.h>
+#include <math.h>
 
 int CalculateInverseMatrix(double* pDst, const double* pSrc, int dim);
 inline void swap(double** a, double** b)
@@ -63,7 +64,30 @@ bool GenerateWeightMatrix(double* W, int size, double weight)
 	return true;
 }
 
-
+bool GenerateExponentialWeightMatrix(double* W, int size, double start_weight, double end_weight)
+{
+	if (size == 1)
+	{
+		if (W == NULL) return false;
+		W[0] = start_weight;
+	}
+	else
+	{
+		double multiplier = pow(end_weight / start_weight, 2.0 / (size - 1));
+		double tmp = start_weight * start_weight;
+		if (W == NULL) return false;
+		for (int i = 0; i < size; i++)
+			for (int j = 0; j < size; j++)
+				if (i==j)
+				{
+					W[i * size + j] = tmp;
+					tmp *= multiplier;
+				}
+				else
+					W[i * size + j] = 0;
+	}
+	return true;
+}
 
 bool GenerateKmpc(double* Kmpc, const double* Su, const double* Wy, const double* Wu, int p, int m)
 {
