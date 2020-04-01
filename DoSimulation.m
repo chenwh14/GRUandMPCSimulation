@@ -99,5 +99,5 @@ for i=1:size(folderNames,1)
     axis([0 1.1*max([max(edges),max(edges2),max(edges3)]) 0 1]);
     title('×Ü¸ú×ÙÎó²î·Ö²¼');
     set(gcf,'unit','centimeters','position',[3 5 40 10]);
-    print(gcf,[pathName,folderNames(i,:),'_in30out10'],'-dpng','-r400');
+    print(gcf,[pathName,folderNames(i,:),'_MPCCorrected'],'-dpng','-r400');
 end

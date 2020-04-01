@@ -16,7 +16,7 @@
 #define PARAM_C ssGetSFcnParam(S, 9)
  
 #define MDL_INITIALIZE_CONDITIONS
-#define MDL_UPDATE
+//#define MDL_UPDATE
 
 /*================*
  * Build checking *
@@ -57,10 +57,11 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetOutputPortWidth(S,0,1);//mo
 
     
-    ssSetInputPortDirectFeedThrough(S, 0, 0);
+    ssSetInputPortDirectFeedThrough(S, 0, 1);
+    ssSetInputPortDirectFeedThrough(S, 1, 1);
 
     ssSetNumPWork(S,1);
-    ssSetNumRWork(S,2);
+    ssSetNumRWork(S,0);
     ssSetNumSampleTimes(S, 1);
 
 
@@ -149,15 +150,24 @@ static void mdlInitializeConditions(SimStruct *S)
     void **pwork = ssGetPWork(S);
     pwork[0]=(void *)mpcontroller;
     
-    real_T *rWork=ssGetRWork(S);
-    rWork[0]=0;
-    rWork[1]=1;
 }
-
+/*
 static void mdlUpdate(SimStruct *S, int_T tid)
 {
+    //double sum=0;
+   // for(int i=0;i<mpcontroller->p*mpcontroller->m;i++)
+    //    sum+=((double*)(mpcontroller->Kmpc))[i];
+}
+*/
+/* Function: mdlOutputs =======================================================
+ * Abstract:
+ *    y = 2*u
+ */
+static void mdlOutputs(SimStruct *S, int_T tid)
+{
+    real_T *y    = ssGetOutputPortRealSignal(S,0);
+
     void **pwork = ssGetPWork(S);
-    real_T *rWork=ssGetRWork(S);
 
     MPController *mpcontroller=(MPController*)(pwork[0]);
 
@@ -168,29 +178,9 @@ static void mdlUpdate(SimStruct *S, int_T tid)
 
     double mo = *uPtrMo[0];
     double mv = mpcontroller->Update(mo,*uPtrRef,refWidth);
-
-    /*if(rWork[0]>5)
-        rWork[1]=-1;
-    else if(rWork[0]<-5)
-      rWork[1]=1;
-    rWork[0]+=rWork[1]*0.01;*/
-    //double sum=0;
-   // for(int i=0;i<mpcontroller->p*mpcontroller->m;i++)
-    //    sum+=((double*)(mpcontroller->Kmpc))[i];
-    rWork[0]=mv;
-
-}
-
-/* Function: mdlOutputs =======================================================
- * Abstract:
- *    y = 2*u
- */
-static void mdlOutputs(SimStruct *S, int_T tid)
-{
-    real_T *y    = ssGetOutputPortRealSignal(S,0);
-    real_T *rWork=ssGetRWork(S);
-
-    y[0]=rWork[0];
+    
+    
+    y[0]=mv;
 }
 
 
