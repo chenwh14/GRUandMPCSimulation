@@ -46,7 +46,7 @@ static void mdlInitializeSizes(SimStruct *S)
     ssSetInputPortDirectFeedThrough(S, 0, 1);
 
     ssSetNumPWork(S, 0);
-    ssSetNumRWork(S, 0);
+    ssSetNumRWork(S, 1);
     ssSetNumSampleTimes(S, 1);
 
     /* specify the sim state compliance to be same as a built-in block */
@@ -79,22 +79,26 @@ static void mdlOutputs(SimStruct *S, int_T tid)
     const double *pPeriod = mxGetPr(PARAM_PERIOD);
     InputRealPtrsType pValue = ssGetInputPortRealSignalPtrs(S, 0);
     real_T *pCommandOut = ssGetOutputPortRealSignal(S, 0);
+    real_T *rwork = ssGetRWork(S);
 
     double t=(double)ssGetT(S);
     
-    int res=floor(t/(*pPeriod));
-    
-    t=t-res*(*pPeriod);
-    
-    if(t<*pTs-2.2204e-16)
+    while(t>=*pPeriod-2.2204e-16)
+    {
+        t-=*pPeriod;
+    }
+        
+    if((t<*pTs)&&(rwork[0]==0))
     {
         pCommandOut[0]=1;
         pCommandOut[1]=*pValue[0];
+        rwork[0]=1;
     }
     else
     {
         pCommandOut[0]=0;
         pCommandOut[1]=0;
+        rwork[0]=0;
     }
 
 }

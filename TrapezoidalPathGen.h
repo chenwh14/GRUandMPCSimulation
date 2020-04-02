@@ -178,7 +178,7 @@ void TrapezoidalPathGen(double offset, double s, double v, double ts, double vma
 				velocity[i] = 0;
 			}
 		else			
-			for (int i = pathSize; i < bufferSize; i++)
+			for (int i = 0; i < bufferSize; i++)
 		{
 			path[i] = offset;
 			velocity[i] = 0;
